@@ -6,7 +6,7 @@ canvas.height = window.innerHeight;
 
 let mario = { 
     x: 0,
-    y: (2 * canvas.height / 3) - 100,
+    y: 0,
     vx: 0,
     vy: 0,
     jump: 0,
@@ -76,16 +76,16 @@ function drawBackground() {
     context.fillStyle = "rgb(224,80,7)";
     context.fillRect(0, 2 * canvas.height / 3, canvas.width, canvas.height / 3);
     context.fillStyle = "rgb(255,148,36)";
-    context.fillRect(mario.x, mario.y, 100, 100);
+    context.fillRect(mario.x, 2 * canvas.height / 3 - 100 - mario.y, 100, 100);
 }
 
 function gameloop() {
     if(mario.jump == 1) {
         if(mario.jumpTime > 25) {
-            mario.y -= 2;
+            mario.y += 2;
         }
         else {
-            mario.y += 2;
+            mario.y -= 2;
         }
         if(mario.jumpType == 1) {
             mario.x += 1;
