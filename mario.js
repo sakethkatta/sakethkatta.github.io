@@ -67,16 +67,32 @@ function keyup(e) {
     }
 }
 
+function onmousedown(e) {
+
+}
+
+function onmouseup(e) {
+    
+}
+
+function drawMario() {
+    context.fillStyle = "rgb(255,148,36)";
+    context.fillRect(mario.x, 2 * canvas.height / 3 - 100 - mario.y, 100, 100);
+}
+
+function drawController() {
+    context.fillStyle = "rgb(255,255,255)"
+    context.fillRect(canvas.width - 75, canvas.height - 75, 50, 50);
+    context.fillRect(canvas.width - 150, canvas.height - 75, 50, 50);
+    context.fillRect(canvas.width - 112.5, canvas.height - 150, 50, 50);
+}
+
 function drawBackground() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "rgb(83,155,255)";
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "rgb(224,80,7)";
     context.fillRect(0, 2 * canvas.height / 3, canvas.width, canvas.height / 3);
-    context.fillStyle = "rgb(255,148,36)";
-    context.fillRect(mario.x, 2 * canvas.height / 3 - 100 - mario.y, 100, 100);
 }
 
 function gameloop() {
@@ -102,10 +118,16 @@ function gameloop() {
         mario.x = (mario.x + 5 * mario.vx + canvas.width) % canvas.width;
         mario.y = (mario.y - 5 * mario.vy + canvas.height) % canvas.height;
     }
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     drawBackground();
+    drawMario();
+    // drawController();
     requestAnimationFrame(gameloop);
 }
 gameloop();
 
 window.addEventListener("keydown", keydown);
 window.addEventListener("keyup", keyup);
+window.addEventListener("onmousedown", onmousedown);
+window.addEventListener("onmouseup", onmouseup);
