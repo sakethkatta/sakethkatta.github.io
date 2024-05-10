@@ -9,24 +9,18 @@ document.addEventListener("gesturechange", function (e) { e.preventDefault(); })
 document.addEventListener("gestureend", function (e) { e.preventDefault(); });
 window.onscroll = function() { window.scrollTo(window.scrollX, window.scrollY); };
 
-let demo = 1;
-
 let mario = { 
-    x: 0, 
+    x: canvas.width / 4, 
     y: 0,
     vx: 0,
-    vy: 15,
+    vy: 20,
     right: 0,
     left: 0,
-    jump: 0,
-    time: 30,
-    scale: 0.5
+    jump: 40,
+    time: 40,
+    scale: 0.5,
+    boxUsed: 0
 };
-
-if(demo == 1) {
-    mario.x = canvas.width / mario.scale / 2;
-    mario.jump = 30;
-}
 
 function keydown(e) {
     e.preventDefault();
@@ -145,6 +139,43 @@ function drawBackground() {
     context.fillRect(0, 2 * canvas.height / 3, canvas.width, canvas.height / 3);
 }
 
+function drawPowerUpBox() {
+    context.fillStyle = "rgb(187,83,16)";
+    context.fillRect(canvas.width / 2, 7 * canvas.height / 21, 85, 85);
+    if(mario.boxUsed == 0) {
+        context.fillStyle = "rgb(255,164,42)";
+        context.fillRect(canvas.width / 2 + 5, 7 * canvas.height / 21 + 5, 75, 75);
+        context.fillStyle = "rgb(187,83,16)";
+        context.fillRect(canvas.width / 2 + 10, 7 * canvas.height / 21 + 10, 7, 7);
+        context.fillRect(canvas.width / 2 + 67, 7 * canvas.height / 21 + 10, 7, 7);
+        context.fillRect(canvas.width / 2 + 10, 7 * canvas.height / 21 + 67, 7, 7);
+        context.fillRect(canvas.width / 2 + 67, 7 * canvas.height / 21 + 67, 7, 7);
+        context.font = "50px Arial Bold";
+        context.fillText("?", canvas.width / 2 + 27.5, 7 * canvas.height / 21 + 60);
+    }
+    else {
+        context.font = "50px Arial Bold";
+        context.fillText("🍄", canvas.width / 2 + 17.5, 7 * canvas.height / 21 - 2.5);
+    }
+}
+
+function inPowerUpBox() {
+    if(mario.boxUsed == 1) return false;
+    if(mario.x * mario.scale > canvas.width / 2 &&
+       mario.x * mario.scale < canvas.width / 2 + 85 &&
+       mario.y > 7 * canvas.height / 21) {
+        mario.boxUsed = 1;
+        mario.vx = 0;
+        mario.right = 0;
+        mario.left = 0;
+        return true;
+    }
+}
+
+function drawMushroom() {
+
+}
+
 function gameloop() {
     if(mario.jump > 0) {
         mario.x += mario.vx / mario.scale;
@@ -167,8 +198,13 @@ function gameloop() {
     if(mario.x < 0) {
         mario.x = canvas.width / mario.scale;
     }
+    if(inPowerUpBox()) {
+        alert("Congratulations!");
+        // window.open("mario.jpeg", "blank");
+    }
     drawBackground();
     drawMario();
+    drawPowerUpBox();
     requestAnimationFrame(gameloop);
 }
 gameloop();
