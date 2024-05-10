@@ -4,6 +4,11 @@ let context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+document.addEventListener("gesturestart", function (e) { e.preventDefault(); });
+document.addEventListener("gesturechange", function (e) { e.preventDefault(); });
+document.addEventListener("gestureend", function (e) { e.preventDefault(); });
+window.onscroll = function() { window.scrollTo(window.scrollX, window.scrollY); };
+
 let demo = 1;
 
 let mario = { 
@@ -20,7 +25,7 @@ let mario = {
 
 if(demo == 1) {
     mario.right = 1;
-    mario.x = canvas.width;
+    mario.x = canvas.width / mario.scale / 2;
     mario.jump = 30;
 }
 
