@@ -16,10 +16,15 @@ let mario = {
     vy: 20,
     right: 0,
     left: 0,
-    jump: 40,
+    jump: 0,
     time: 40,
     scale: 0.5,
-    boxUsed: 0
+    boxUsed: 0,
+    mushroom: { x: 0,
+                y: 0,
+                vx: 1,
+                vy: 0,
+                used: 0 },
 };
 
 function keydown(e) {
@@ -139,44 +144,80 @@ function drawBackground() {
     context.fillRect(0, 2 * canvas.height / 3, canvas.width, canvas.height / 3);
 }
 
-function drawPowerUpBox() {
+function drawBox() {
     context.fillStyle = "rgb(187,83,16)";
     context.fillRect(canvas.width / 2, 7 * canvas.height / 21, 85, 85);
     if(mario.boxUsed == 0) {
         context.fillStyle = "rgb(255,164,42)";
         context.fillRect(canvas.width / 2 + 5, 7 * canvas.height / 21 + 5, 75, 75);
         context.fillStyle = "rgb(187,83,16)";
-        context.fillRect(canvas.width / 2 + 10, 7 * canvas.height / 21 + 10, 7, 7);
-        context.fillRect(canvas.width / 2 + 67, 7 * canvas.height / 21 + 10, 7, 7);
-        context.fillRect(canvas.width / 2 + 10, 7 * canvas.height / 21 + 67, 7, 7);
-        context.fillRect(canvas.width / 2 + 67, 7 * canvas.height / 21 + 67, 7, 7);
-        context.font = "50px Arial Bold";
-        context.fillText("?", canvas.width / 2 + 27.5, 7 * canvas.height / 21 + 60);
-    }
-    else {
-        context.font = "50px Arial Bold";
-        context.fillText("🍄", canvas.width / 2 + 17.5, 7 * canvas.height / 21 - 2.5);
+        context.fillRect(canvas.width / 2 + 10, 7 * canvas.height / 21 + 10, 5, 5);
+        context.fillRect(canvas.width / 2 + 70, 7 * canvas.height / 21 + 10, 5, 5);
+        context.fillRect(canvas.width / 2 + 10, 7 * canvas.height / 21 + 70, 5, 5);
+        context.fillRect(canvas.width / 2 + 70, 7 * canvas.height / 21 + 70, 5, 5);
+        context.fillRect(canvas.width / 2 + 41, 7 * canvas.height / 21 + 58, 10, 10);
+        context.fillRect(canvas.width / 2 + 41, 7 * canvas.height / 21 + 45, 10, 10);
+        context.fillRect(canvas.width / 2 + 50, 7 * canvas.height / 21 + 45, 7, 7);
+        context.fillRect(canvas.width / 2 + 50, 7 * canvas.height / 21 + 36, 10, 10);
+        context.fillRect(canvas.width / 2 + 50, 7 * canvas.height / 21 + 27, 10, 10);
+        context.fillRect(canvas.width / 2 + 50, 7 * canvas.height / 21 + 21, 7, 7);
+        context.fillRect(canvas.width / 2 + 41, 7 * canvas.height / 21 + 18, 10, 10);
+        context.fillRect(canvas.width / 2 + 32, 7 * canvas.height / 21 + 18, 10, 10);
+        context.fillRect(canvas.width / 2 + 26, 7 * canvas.height / 21 + 21, 7, 7);
+        context.fillRect(canvas.width / 2 + 22, 7 * canvas.height / 21 + 27, 10, 10);
     }
 }
 
-function inPowerUpBox() {
-    if(mario.boxUsed == 1) return false;
-    if(mario.x * mario.scale > canvas.width / 2 &&
+function inBox() {
+    if(mario.boxUsed == 0 && 
+       mario.x * mario.scale > canvas.width / 2 &&
        mario.x * mario.scale < canvas.width / 2 + 85 &&
        mario.y > 7 * canvas.height / 21) {
         mario.boxUsed = 1;
         mario.vx = 0;
         mario.right = 0;
         mario.left = 0;
-        return true;
+        mario.mushroom.x = canvas.width / 2;
+        mario.mushroom.y = 7 * canvas.height / 21;
     }
 }
 
-function drawMushroom() {
-
+function drawMushroom(x, y) {
+    context.fillStyle = "rgb(255,162,63)";
+    context.fillRect(x + 15, y - 22, 55, 7);
+    context.fillRect(x + 10, y - 28, 65, 7);
+    context.fillRect(x + 10, y - 34, 65, 7);
+    context.fillRect(x + 15, y - 40, 55, 7);
+    context.fillRect(x + 20, y - 46, 45, 7);
+    context.fillRect(x + 25, y - 52, 35, 7);
+    context.fillRect(x + 30, y - 58, 25, 7);
+    context.fillStyle = "rgb(255,252,247)";
+    context.fillRect(x + 30, y - 10, 25, 7);
+    context.fillRect(x + 25, y - 16, 35, 7);
+    context.fillRect(x + 30, y - 22, 25, 7);
+    context.fillStyle = "rgb(252,57,1)";
+    context.fillRect(x + 20, y - 30, 10, 5);
+    context.fillRect(x + 17.5, y - 34, 15, 5);
+    context.fillRect(x + 20, y - 38, 10, 5);
+    context.fillRect(x + 45, y - 43, 10, 5);
+    context.fillRect(x + 42.5, y - 47, 15, 5);
+    context.fillRect(x + 45, y - 51, 10, 5);
 }
 
-function gameloop() {
+function inMushroom() {
+    if(mario.mushroom.used == 0 &&
+       mario.mushroom.vy == 0 &&
+       Math.abs((mario.x * mario.scale) - mario.mushroom.x) < 25) {
+        mario.mushroom.used = 1;
+        mario.vx = 0;
+        mario.right = 0;
+        mario.left = 0;
+        alert("Congratulations!");
+        window.open("mario.jpg");
+    }
+}
+
+function moveMario() {
     if(mario.jump > 0) {
         mario.x += mario.vx / mario.scale;
         if(mario.jump > mario.time / 2) {
@@ -197,14 +238,33 @@ function gameloop() {
     }
     if(mario.x < 0) {
         mario.x = canvas.width / mario.scale;
+    } 
+}
+
+function moveMushroom() {
+    mario.mushroom.x += mario.mushroom.vx;
+    mario.mushroom.y += mario.mushroom.vy;
+    mario.mushroom.vy += 0.1;
+    if(mario.mushroom.y > canvas.height / 1.5) {
+        mario.mushroom.vy = 0;
     }
-    if(inPowerUpBox()) {
-        alert("Congratulations!");
-        // window.open("mario.jpeg", "blank");
+    if(mario.mushroom.x > canvas.width) {
+        mario.mushroom.x = 0;
     }
+}
+
+function gameloop() {
+    moveMario();
+    if(mario.boxUsed == 1) moveMushroom();
     drawBackground();
     drawMario();
-    drawPowerUpBox();
+    drawBox();
+    inBox()
+    if(mario.boxUsed == 1 && mario.mushroom.used == 0) {
+        moveMushroom();
+        inMushroom();
+        drawMushroom(mario.mushroom.x, mario.mushroom.y);
+    }
     requestAnimationFrame(gameloop);
 }
 gameloop();
