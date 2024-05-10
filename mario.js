@@ -4,6 +4,8 @@ let context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let demo = 1;
+
 let mario = { 
     x: 0, 
     y: 0,
@@ -15,6 +17,12 @@ let mario = {
     time: 30,
     scale: 0.5
 };
+
+if(demo == 1) {
+    mario.right = 1;
+    mario.x = canvas.width;
+    mario.jump = 30;
+}
 
 function keydown(e) {
     e.preventDefault();
