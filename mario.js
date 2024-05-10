@@ -24,7 +24,6 @@ let mario = {
 };
 
 if(demo == 1) {
-    mario.right = 1;
     mario.x = canvas.width / mario.scale / 2;
     mario.jump = 30;
 }
@@ -52,11 +51,9 @@ function keyup(e) {
     e.preventDefault();
     if(e.code == "ArrowRight") {
         mario.vx = 0;
-        mario.right = 0;
     }
     if(e.code == "ArrowLeft") {
         mario.vx = 0;
-        mario.left = 0;
     }
 }
 
@@ -121,7 +118,7 @@ function drawMario() {
     context.fillRect(mario.x + 62.5, 2 * canvas.height / 3 - 166 - mario.y, 25, 37.5);
     if(mario.left == 1) {
         context.fillRect(mario.x + 62.5, 2 * canvas.height / 3 - 132 - mario.y, 37.5, 13.5);
-        context.fillRect(mario.x + 50.5, 2 * canvas.height / 3 - 145 - mario.y, 13, 13);
+        context.fillRect(mario.x + 51, 2 * canvas.height / 3 - 145 - mario.y, 13, 13);
         context.fillRect(mario.x + 12.5, 2 * canvas.height / 3 - 145 - mario.y, 25.5, 13);
         context.fillRect(mario.x + 25, 2 * canvas.height / 3 - 156 - mario.y, 25.5, 12.5);
         context.fillRect(mario.x + 37.5, 2 * canvas.height / 3 - 166 - mario.y, 13, 13);
