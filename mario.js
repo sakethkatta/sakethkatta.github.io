@@ -5,13 +5,14 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let mario = { 
-    x: 0,
+    x: 0, 
     y: 0,
     vx: 0,
     vy: 15,
     right: 0,
     left: 0,
     jump: 0,
+    time: 30,
     scale: 0.5
 };
 
@@ -29,7 +30,7 @@ function keydown(e) {
     }
     if(e.code == "ArrowUp") {
         if(mario.jump == 0) {
-            mario.jump = 30;
+            mario.jump = mario.time;
         }
     }
 }
@@ -122,6 +123,8 @@ function drawMario() {
 }
 
 function drawBackground() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "rgb(83,155,255)";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -131,13 +134,8 @@ function drawBackground() {
 
 function gameloop() {
     if(mario.jump > 0) {
-        if(mario.right == 1) {
-            mario.x += 5 / mario.scale;
-        }
-        else if(mario.left == 1) {
-            mario.x -= 5 / mario.scale;
-        }
-        if(mario.jump > 15) {
+        mario.x += mario.vx / mario.scale;
+        if(mario.jump > mario.time / 2) {
             mario.vy -= 1;
             mario.y += mario.vy / mario.scale;
         }
@@ -148,16 +146,14 @@ function gameloop() {
         mario.jump--;
     }
     else {
-        mario.x += mario.vx;
+        mario.x += mario.vx / mario.scale;
     }
-    if(mario.x * mario.scale > canvas.width) {
+    if(mario.x > canvas.width / mario.scale) {
         mario.x = 0;
     }
-    if(mario.x * mario.scale < 0) {
+    if(mario.x < 0) {
         mario.x = canvas.width / mario.scale;
     }
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     drawBackground();
     drawMario();
     requestAnimationFrame(gameloop);
