@@ -213,7 +213,7 @@ function inMushroom() {
         mario.right = 0;
         mario.left = 0;
         alert("Congratulations!");
-        window.open("mario.jpg");
+        window.open("Resume.pdf");
     }
 }
 
