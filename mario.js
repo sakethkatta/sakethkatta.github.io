@@ -207,7 +207,8 @@ function drawMushroom(x, y) {
 function inMushroom() {
     if(mario.mushroom.used == 0 &&
        mario.mushroom.vy == 0 &&
-       Math.abs((mario.x * mario.scale) - mario.mushroom.x) < 25) {
+       Math.abs((mario.x * mario.scale) - mario.mushroom.x) < 25 &&
+       mario.y == 0) {
         mario.mushroom.used = 1;
         mario.vx = 0;
         mario.right = 0;
